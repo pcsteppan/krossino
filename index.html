@@ -38,7 +38,8 @@
       }
 			canvas { width: 100%; height: 100% }
       #skelly1, #skelly2{
-        height: 90%;
+        /* height: 70%; */
+        width: 27vw;
       }
       #skelly-container{
         display: flex;
@@ -47,7 +48,7 @@
         width: 100vw;
         position: absolute;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-around;
       }
     </style>
     
@@ -130,7 +131,7 @@
           auto = !auto;
         }
   
-        let score = 100;
+        let score = 1;
         let current_bet = 1;
         let spinning = false;
         let auto = false;
@@ -174,7 +175,7 @@
           } else {
             material.map = texture;
             document.body.style["background-image"] = "url(\"Coin.gif\")"
-            document.body.style["background-size"] = "1%"
+            // document.body.style["background-size"] = "2%"
             
             document.getElementById("score").style.color = "red";
             document.getElementById("skelly-container").style.display = "none";
