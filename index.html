@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<title>Kross Slots</title>
+		<style>
+			body { margin: 0; overflow: hidden; width: 100%; background-image: url("Coin.gif"); background-size: 18px;}
+      /* #center-wrapper{
+        display: none;
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        z-height: -3;
+      }
+      #winner-spinner{
+        animation: spin infinite linear 1s;
+        display: block;
+        font-size: 6rem;
+        font-family: cursive;
+        color:white;
+        background-color:rgba(0,0,0,.9);
+      } */
+      @keyframes spin{
+        from {
+          transform: rotateZ(0);
+        }
+        to {
+          transform: rotateZ(1turn);
+        }
+      }
+      #spin-button{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 4rem;
+        background-color: rgb(240, 20, 49);
+        color: rgb(240, 225, 20);
+        text-align: center;
+        font-family: cursive;
+        font-size: 2rem;
+        margin-right: 2rem;
+        padding: 0 1rem;
+      }
+      #score {
+        position: absolute;
+        top: 0;
+        text-align: center;
+        width: 100%;
+        color: rgb(240, 20, 49);
+        background-color: white;
+        font-size: 2rem;
+        font-family: cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+      <button id="spin-button">spin</button>
+      <p id="score">100</p>
+      <!-- <div id="center-wrapper"> -->
+      <!-- <p id="winner-spinner">test</p> -->
+    </div>
+		<script src="js/three.js"></script>
+		<script>
+      const reel_ids = [
+        "matt",
+        "david marlena",
+        "brandon joe",
+        "marlena",
+        "joe",
+        "marlena sara",
+        "andrew patrick",
+        "amanda anna sara",
+        "kevin marlena",
+        "patrick",
+        "andrew",
+        "sara",
+        "joe sonya",
+        "andrew",
+        "brandon",
+        "sean",
+        "amanda daniel matt",
+        "david",
+        "amanda hirzel",
+        "brandon",
+        "andrew patrick",
+        "amanda anna sara",
+        "andrew",
+        "daniel",
+        "andrew anna amanda daniel david joe kevin marlena matt patrick sara sean",
+        "brandon",
+        "daniel",
+        "marlena",
+        "anna kevin sara david",
+        "hirzel",
+        "sean",
+        "matt",
+        "david sean",
+        "amanda joe sean"
+      ]
+      
+      let reelData = [
+        {
+          "previous" : 0,
+          "new" : 0,
+          "reel" : 0,
+          "p" : 1
+        },
+        {
+          "previous" : 0,
+          "new" : 0,
+          "reel" : 0,
+          "p" : 1
+        },
+        {
+          "previous" : 0,
+          "new" : 0,
+          "reel" : 0,
+          "p" : 1
+        }
+      ]
+
+      let score = 100;
+      let spinning = false;
+
+      function changeScore(delta) {
+        score += delta;
+        document.getElementById("score").innerText = score;
+      }
+
+      function calculate() {
+
+      }
+
+      function spin() {
+        if(!spinning){
+          // document.getElementById("winner-spinner").style.display = 'none';
+          spinning = true;
+          changeScore(-1);
+          reelData.forEach((reel) => {
+            reel.previous = reel.new;
+            reel.new = Math.round(Math.random() * reel_ids.length);
+            reel.p = 0;
+          })
+          const s1 = reel_ids[reelData[0].new].split(' ')
+          const s2 = new Set(reel_ids[reelData[1].new].split(' '))
+          const s3 = new Set(reel_ids[reelData[2].new].split(' '))
+          const intersectingIDs = s1.filter(x => {
+            return s2.has(x) && s3.has(x)
+          })
+          if(intersectingIDs.length > 0) {
+            // document.getElementById("winner-spinner").innerText = intersectingIDs.toString();
+            // document.getElementById("center-wrapper").style.display = 'flex';
+            // setTimeout(() => {document.getElementById("center-wrapper").style.display = 'none'}, 2000)
+            changeScore(25 * (intersectingIDs * intersectingIDs))
+          }
+        }
+      }
+
+      // t: current time, b: beginning value, c: change in value, d: duration
+      function lerp(t, b, c, d=1) {
+        // return (b-a*p) + a;
+        return -c *(t/d)*(t-2) + b;
+      }
+
+      function animate() {
+        reelData.forEach((reel, index) => {
+          if(reel.p < 1){
+            reel.p += 1 / (100 + 33 * index);
+            const rot = lerp(
+              reel.p,
+              reel.previous,
+              (reel.new - reel.previous) + 34 * (index + 1)
+            ) * (Math.PI / (reel_ids.length / 2)) - (Math.PI / 34);
+            reel.reel.rotation.x = -rot;
+          }
+        });
+
+        if(reelData.filter(x => {
+          return x.p >= 1;
+        }).length == 3) {
+          spinning = false;
+        }
+
+        requestAnimationFrame( animate );
+        renderer.render( scene, camera);
+      }
+
+      function setupDOM() {
+        console.log('setup');
+        document.getElementById("spin-button").addEventListener("click", spin);
+      }
+
+      setupDOM();
+
+      var scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera( 110, window.innerWidth / window.innerHeight, 1, 5000 );
+      camera.position.z = 1950;
+
+
+      var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+      renderer.setClearColor( 0x000000, 0 );
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      document.body.appendChild( renderer.domElement );
+
+      var texture = new THREE.TextureLoader().load( 'textures/test_shuffled.jpg' );
+
+      var geometry = new THREE.CylinderGeometry( 1400, 1400, 256, 34 );
+      var material = new THREE.MeshBasicMaterial( {color: 0xffffff, map: texture} );
+      var cylinder = new THREE.Mesh( geometry, material );
+      var cylinder2 = new THREE.Mesh( geometry, material );
+      var cylinder3 = new THREE.Mesh( geometry, material );
+
+      cylinder.rotation.z = Math.PI / 2;
+      cylinder2.rotation.z = Math.PI / 2;
+      cylinder3.rotation.z = Math.PI / 2;
+
+      cylinder.position.x -= 256.5;
+      cylinder3.position.x += 256.5;
+
+      reelData[0].reel = cylinder;
+      reelData[1].reel = cylinder2;
+      reelData[2].reel = cylinder3;
+
+      scene.add(reelData[0].reel);
+      scene.add(reelData[1].reel);
+      scene.add(reelData[2].reel);
+
+      animate();
+		</script>
+	</body>
+</html>
