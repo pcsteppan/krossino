@@ -3,7 +3,9 @@
 	<head>
     <meta charset=utf-8>
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<title>Gina's Casino</title>
+    <title>Gina's Casino</title>
+    
+		<script src="js/three.js"></script>
 		<style>
 			body { margin: 0; overflow: hidden; width: 100%; background-image: url("Coin.gif"); background-size: 18px;}
       #button-shelf {
@@ -47,7 +49,8 @@
         align-items: center;
         justify-content: space-between;
       }
-		</style>
+    </style>
+    
 	</head>
 	<body>
     <p id="score">100</p>
@@ -62,192 +65,192 @@
       <img id="skelly1" src="Skeleton.gif" alt="very scary animated dancing skeleton 1">
       <img id="skelly2" src="Skeleton.gif" alt="very scary animated dancing skeleton 2">
     </div>
-    </div>
-		<script src="js/three.js"></script>
-		<script>
-      const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-      // collection is an array
-      const intersection = function (collection) {
-              const init = new Set (collection.shift())
-              return collection.reduce((acc, el) => {
-                const elSet = new Set(el)
-                return new Set([...acc].filter(x => elSet.has(x)))
-              }, init)
-            }
-      
-      const NUM_OF_REELS = 3;
-      const reel_ids = [
-        "matt",
-        "david marlena",
-        "brandon joe",
-        "marlena",
-        "joe",
-        "marlena sara",
-        "andrew patrick",
-        "amanda anna sara",
-        "kevin marlena",
-        "patrick",
-        "andrew",
-        "sara",
-        "joe sonya",
-        "andrew",
-        "brandon",
-        "sean",
-        "amanda daniel matt",
-        "david",
-        "amanda hirzel",
-        "brandon",
-        "andrew patrick",
-        "amanda anna sara",
-        "andrew",
-        "daniel",
-        "andrew anna amanda daniel david joe kevin marlena matt patrick sara sean",
-        "brandon",
-        "daniel",
-        "marlena",
-        "anna kevin sara david",
-        "hirzel",
-        "sean",
-        "matt",
-        "david sean",
-        "amanda joe sean"
-      ]
-      
-      let reelData = []
-      for(let i = 0; i < NUM_OF_REELS; i+=1){
-        reelData.push({
-          "previous" : 0,
-          "new" : 0,
-          "reel" : 0,
-          "p" : 1
-        })
-      }
-
-      const toggleAuto = function() {
-        auto = !auto;
-      }
-
-      let score = 100;
-      let current_bet = 1;
-      let spinning = false;
-      let auto = false;
-
-      function changeScore(delta) {
-        //the code snippet below is a different game mode where you can hope to be as negative as possible
-        // score += Math.sign(score) * delta;
-        // if(score == 0){
-        //   score = 1;
-        // }
-        score += delta;
-        document.getElementById("score").innerText = score;
-      }
-
-      function spin(bet) {
-        current_bet = bet;
-        if(!spinning){
-          spinning = true;
-          changeScore(-bet);
-          reelData.forEach((reel) => {
-            reel.previous = reel.new;
-            reel.new = Math.floor(Math.random() * reel_ids.length);
-            reel.p = 0;
+    
+    
+    <script>
+        const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+        // collection is an array
+        const intersection = function (collection) {
+                const init = new Set (collection.shift())
+                return collection.reduce((acc, el) => {
+                  const elSet = new Set(el)
+                  return new Set([...acc].filter(x => elSet.has(x)))
+                }, init)
+              }
+        
+        const NUM_OF_REELS = 3;
+        const reel_ids = [
+          "matt",
+          "david marlena",
+          "brandon joe",
+          "marlena",
+          "joe",
+          "marlena sara",
+          "andrew patrick",
+          "amanda anna sara",
+          "kevin marlena",
+          "patrick",
+          "andrew",
+          "sara",
+          "joe sonya",
+          "andrew",
+          "brandon",
+          "sean",
+          "amanda daniel matt",
+          "david",
+          "amanda hirzel",
+          "brandon",
+          "andrew patrick",
+          "amanda anna sara",
+          "andrew",
+          "daniel",
+          "andrew anna amanda daniel david joe kevin marlena matt patrick sara sean",
+          "brandon",
+          "daniel",
+          "marlena",
+          "anna kevin sara david",
+          "hirzel",
+          "sean",
+          "matt",
+          "david sean",
+          "amanda joe sean"
+        ]
+        
+        let reelData = []
+        for(let i = 0; i < NUM_OF_REELS; i+=1){
+          reelData.push({
+            "previous" : 0,
+            "new" : 0,
+            "reel" : 0,
+            "p" : 1
           })
         }
-      }
-
-      // t: current time, b: beginning value, c: change in value, d: duration
-      function lerp(t, b, c, d=1) {
-        return -c *(t/d)*(t-2) + b;
-      }
-
-      function animate() {
-
-        if (score < 0) {
-          material.map = inverted_texture;
-          document.body.style["background-image"] = "url(\"Fire.gif\")"
-          document.body.style["background-size"] = "contain"
-          document.getElementById("score").style.color = "blue";
-          document.getElementById("skelly-container").style.display = "flex";
-        } else {
-          material.map = texture;
-          document.body.style["background-image"] = "url(\"Coin.gif\")"
-          document.body.style["background-size"] = "1%"
-          
-          document.getElementById("score").style.color = "red";
-          document.getElementById("skelly-container").style.display = "none";
+  
+        const toggleAuto = function() {
+          auto = !auto;
         }
-
-        reelData.forEach((reel, index) => {
-          if(reel.p < 1){
-            reel.p += 1 / (100 + 33 * index);
-            const rot = lerp(
-              reel.p,
-              reel.previous,
-              (reel.new - reel.previous) + 34 * (index + 1)
-            ) * (Math.PI / (reel_ids.length / 2)) - (Math.PI / 34);
-            reel.reel.rotation.x = -rot;
+  
+        let score = 100;
+        let current_bet = 1;
+        let spinning = false;
+        let auto = false;
+  
+        function changeScore(delta) {
+          //the code snippet below is a different game mode where you can hope to be as negative as possible
+          // score += Math.sign(score) * delta;
+          // if(score == 0){
+          //   score = 1;
+          // }
+          score += delta;
+          document.getElementById("score").innerText = score;
+        }
+  
+        function spin(bet) {
+          current_bet = bet;
+          if(!spinning){
+            spinning = true;
+            changeScore(-bet);
+            reelData.forEach((reel) => {
+              reel.previous = reel.new;
+              reel.new = Math.floor(Math.random() * reel_ids.length);
+              reel.p = 0;
+            })
           }
-        });
-
-        //
-        if(reelData.filter(x => {
-          return x.p >= 1;
-        }).length == NUM_OF_REELS) {
-          if (spinning) {
-            spinning = false;
-            const namesOnRow = reelData.reduce((acc, reel) => {
-              acc.push(reel_ids[reel.new].split(' '))
-              return acc
-            }, [])
-            const commonItems = intersection(namesOnRow);
-            if(commonItems.size > 0) {
-              changeScore(25 * (commonItems.size * commonItems.size) * current_bet)
+        }
+  
+        // t: current time, b: beginning value, c: change in value, d: duration
+        function lerp(t, b, c, d=1) {
+          return -c *(t/d)*(t-2) + b;
+        }
+  
+        function animate() {
+  
+          if (score < 0) {
+            material.map = inverted_texture;
+            document.body.style["background-image"] = "url(\"Fire.gif\")"
+            document.body.style["background-size"] = "contain"
+            document.getElementById("score").style.color = "blue";
+            document.getElementById("skelly-container").style.display = "flex";
+          } else {
+            material.map = texture;
+            document.body.style["background-image"] = "url(\"Coin.gif\")"
+            document.body.style["background-size"] = "1%"
+            
+            document.getElementById("score").style.color = "red";
+            document.getElementById("skelly-container").style.display = "none";
+          }
+  
+          reelData.forEach((reel, index) => {
+            if(reel.p < 1){
+              reel.p += 1 / (100 + 50 * index);
+              const rot = lerp(
+                reel.p,
+                reel.previous,
+                (reel.new - reel.previous) + 34 * (index + 1),
+              ) * (Math.PI / (reel_ids.length / 2)) - (Math.PI / 34);
+              reel.reel.rotation.x = -rot;
+            }
+          });
+  
+          //
+          if(reelData.filter(x => {
+            return x.p >= 1;
+          }).length == NUM_OF_REELS) {
+            if (spinning) {
+              spinning = false;
+              const namesOnRow = reelData.reduce((acc, reel) => {
+                acc.push(reel_ids[reel.new].split(' '))
+                return acc
+              }, [])
+              const commonItems = intersection(namesOnRow);
+              if(commonItems.size > 0) {
+                changeScore(25 * (commonItems.size * commonItems.size) * current_bet)
+              }
+            }
+            if (auto) {
+              spin(current_bet);
             }
           }
-          if (auto) {
-            spin(current_bet);
-          }
+  
+          requestAnimationFrame( animate );
+          renderer.render( scene, camera);
         }
-
-        requestAnimationFrame( animate );
-        renderer.render( scene, camera);
-      }
-
-      function setupDOM() {
-        document.getElementById("button-1").addEventListener("click", () => spin(1));
-        document.getElementById("button-5").addEventListener("click", () => spin(5));
-        document.getElementById("button-10").addEventListener("click", () => spin(10));
-        document.getElementById("autospin-button").addEventListener("click", toggleAuto);
-      }
-
-      setupDOM();
-
-      var scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera( 110, window.innerWidth / window.innerHeight, 1, 5000 );
-      camera.position.z = 1950;
-
-
-      var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-      renderer.setClearColor( 0x000000, 0 );
-      renderer.setSize( window.innerWidth, window.innerHeight );
-      document.body.appendChild( renderer.domElement );
-
-      var texture = new THREE.TextureLoader().load( 'textures/test_shuffled2.jpg' );
-      var inverted_texture = new THREE.TextureLoader().load('textures/test_shuffled_i.jpg');
-
-      var geometry = new THREE.CylinderGeometry( 1400, 1400, 256, 34 );
-      var material = new THREE.MeshBasicMaterial( {color: 0xffffff, map: texture} );
-
-      for(let i = 0; i < NUM_OF_REELS; i+=1){
-        const reel = new THREE.Mesh( geometry, material );
-        reel.rotation.z = Math.PI / 2;
-        reel.rotation.x = - (Math.PI / 34);
-        reel.position.x = (i - Math.floor(NUM_OF_REELS / 2)) * 256;
-        reelData[i].reel = reel;
-        scene.add(reelData[i].reel)
-      }
-
-      animate();
-		</script>
+  
+        function setupDOM() {
+          document.getElementById("button-1").addEventListener("click", () => spin(1));
+          document.getElementById("button-5").addEventListener("click", () => spin(5));
+          document.getElementById("button-10").addEventListener("click", () => spin(10));
+          document.getElementById("autospin-button").addEventListener("click", toggleAuto);
+        }
+  
+        setupDOM();
+  
+        var scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera( 110, window.innerWidth / window.innerHeight, 1, 5000 );
+        camera.position.z = 1950;
+  
+  
+        var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+        renderer.setClearColor( 0x000000, 0 );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+  
+        var texture = new THREE.TextureLoader().load( 'textures/test_shuffled2.jpg' );
+        var inverted_texture = new THREE.TextureLoader().load('textures/test_shuffled_i.jpg');
+  
+        var geometry = new THREE.CylinderGeometry( 1400, 1400, 256, 34 );
+        var material = new THREE.MeshBasicMaterial( {color: 0xffffff, map: texture} );
+  
+        for(let i = 0; i < NUM_OF_REELS; i+=1){
+          const reel = new THREE.Mesh( geometry, material );
+          reel.rotation.z = Math.PI / 2;
+          reel.rotation.x = - (Math.PI / 34);
+          reel.position.x = (i - Math.floor(NUM_OF_REELS / 2)) * 256;
+          reelData[i].reel = reel;
+          scene.add(reelData[i].reel)
+        }
+  
+        animate();
+      </script>
 	</body>
 </html>
