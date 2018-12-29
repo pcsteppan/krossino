@@ -127,12 +127,9 @@
       let spinning = false;
 
       function changeScore(delta) {
+        console.log(delta);
         score += delta;
         document.getElementById("score").innerText = score;
-      }
-
-      function calculate() {
-
       }
 
       function spin() {
@@ -145,18 +142,6 @@
             reel.new = Math.round(Math.random() * reel_ids.length);
             reel.p = 0;
           })
-          const s1 = reel_ids[reelData[0].new].split(' ')
-          const s2 = new Set(reel_ids[reelData[1].new].split(' '))
-          const s3 = new Set(reel_ids[reelData[2].new].split(' '))
-          const intersectingIDs = s1.filter(x => {
-            return s2.has(x) && s3.has(x)
-          })
-          if(intersectingIDs.length > 0) {
-            // document.getElementById("winner-spinner").innerText = intersectingIDs.toString();
-            // document.getElementById("center-wrapper").style.display = 'flex';
-            // setTimeout(() => {document.getElementById("center-wrapper").style.display = 'none'}, 2000)
-            changeScore(25 * (intersectingIDs * intersectingIDs))
-          }
         }
       }
 
@@ -182,7 +167,22 @@
         if(reelData.filter(x => {
           return x.p >= 1;
         }).length == 3) {
+          if (spinning) {
           spinning = false;
+
+          const s1 = reel_ids[reelData[0].new % 34].split(' ')
+          const s2 = new Set(reel_ids[reelData[1].new % 34].split(' '))
+          const s3 = new Set(reel_ids[reelData[2].new % 34].split(' '))
+          const intersectingIDs = s1.filter(x => {
+            return s2.has(x) && s3.has(x)
+          })
+          if(intersectingIDs.length > 0) {
+            // document.getElementById("winner-spinner").innerText = intersectingIDs.toString();
+            // document.getElementById("center-wrapper").style.display = 'flex';
+            // setTimeout(() => {document.getElementById("center-wrapper").style.display = 'none'}, 2000)
+            changeScore(25 * (intersectingIDs * intersectingIDs))
+          }
+        }
         }
 
         requestAnimationFrame( animate );
