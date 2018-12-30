@@ -4,7 +4,6 @@
     <meta charset=utf-8>
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>Gina's Casino</title>
-    
 		<script src="js/three.js"></script>
 		<style>
 			body { margin: 0; overflow: hidden; width: 100%; background-image: url("Coin.gif"); background-size: 18px;}
@@ -16,6 +15,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        z-index: 3;
       }
       #button-shelf > button {
         background-color: rgb(240, 20, 49);
@@ -36,10 +36,10 @@
         font-size: 2rem;
         font-family: cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       }
-			canvas { width: 100%; height: 100% }
+			canvas { width: 100%; height: 100%; z-index: 1 }
       #skelly1, #skelly2{
         /* height: 70%; */
-        width: 27vw;
+        height: 45vh;
       }
       #skelly-container{
         display: flex;
@@ -49,6 +49,7 @@
         position: absolute;
         align-items: center;
         justify-content: space-around;
+        z-index: 2;
       }
     </style>
     
@@ -131,7 +132,7 @@
           auto = !auto;
         }
   
-        let score = 1;
+        let score = 100;
         let current_bet = 1;
         let spinning = false;
         let auto = false;
@@ -175,7 +176,7 @@
           } else {
             material.map = texture;
             document.body.style["background-image"] = "url(\"Coin.gif\")"
-            // document.body.style["background-size"] = "2%"
+            document.body.style["background-size"] = "2%"
             
             document.getElementById("score").style.color = "red";
             document.getElementById("skelly-container").style.display = "none";
@@ -229,7 +230,6 @@
         var scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera( 110, window.innerWidth / window.innerHeight, 1, 5000 );
         camera.position.z = 1950;
-  
   
         var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
         renderer.setClearColor( 0x000000, 0 );
