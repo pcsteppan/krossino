@@ -6,7 +6,7 @@
     <title>Gina's Casino</title>
 		<script src="js/three.js"></script>
 		<style>
-			body { margin: 0; overflow: hidden; width: 100%; background-image: url("Coin.gif"); background-size: 18px;}
+			body { margin: 0; overflow: hidden; width: 100%; background-image: url("Coin.gif"); background-size: 12px;}
       #button-shelf {
         position: absolute;
         bottom: 0;
@@ -176,8 +176,7 @@
           } else {
             material.map = texture;
             document.body.style["background-image"] = "url(\"Coin.gif\")"
-            document.body.style["background-size"] = "2%"
-            
+            document.body.style["background-size"] = "12px"
             document.getElementById("score").style.color = "red";
             document.getElementById("skelly-container").style.display = "none";
           }
