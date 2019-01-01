@@ -6,7 +6,7 @@
     <title>Gina's Casino</title>
 		<script src="js/three.js"></script>
 		<style>
-			body { margin: 0; overflow: hidden; width: 100%; background-image: url("Coin.gif"); background-size: 12px;}
+			body { margin: 0; overflow: hidden; width: 100%; background-image: url("2019.gif"); background-size: 12px;}
       #button-shelf {
         position: absolute;
         bottom: 0;
@@ -18,7 +18,8 @@
         z-index: 3;
       }
       #button-shelf > button {
-        background-color: rgb(240, 20, 49);
+        /* background-color: rgb(240, 20, 49); */
+        background-color: black;
         color: rgb(240, 225, 20);
         text-align: center;
         font-family: cursive;
@@ -31,8 +32,8 @@
         top: 0;
         text-align: center;
         width: 100%;
-        color: rgb(240, 20, 49);
-        background-color: white;
+        color: gold;
+        background-color: black;
         font-size: 2rem;
         font-family: cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       }
@@ -57,15 +58,15 @@
 	<body>
     <p id="score">100</p>
     <div id="button-shelf">
-      <button id="button-1">1</button>
-      <button id="button-5">5</button>
-      <button id="button-10">10</button>
+      <button id="button-1">20</button>
+      <button id="button-5">19</button>
+      <!-- <button id="button-10">10</button> -->
       <!-- <button id="spin-button">spin</button> -->
       <button id="autospin-button">auto</button>
     </div>
     <div id="skelly-container">
-      <img id="skelly1" src="Skeleton.gif" alt="very scary animated dancing skeleton 1">
-      <img id="skelly2" src="Skeleton.gif" alt="very scary animated dancing skeleton 2">
+      <img id="skelly1" src="leftSkelly.gif" alt="very scary animated trumpeting skeleton 1">
+      <img id="skelly2" src="rightSkelly.gif" alt="very scary animated trumpeting skeleton 2">
     </div>
     
     
@@ -169,15 +170,15 @@
   
           if (score < 0) {
             material.map = inverted_texture;
-            document.body.style["background-image"] = "url(\"Fire.gif\")"
-            document.body.style["background-size"] = "contain"
-            document.getElementById("score").style.color = "blue";
+            document.body.style["background-image"] = "url(\"Fire2019.gif\")"
+            document.body.style["background-size"] = "22%"
+            document.getElementById("score").style.color = "red";
             document.getElementById("skelly-container").style.display = "flex";
           } else {
             material.map = texture;
-            document.body.style["background-image"] = "url(\"Coin.gif\")"
-            document.body.style["background-size"] = "12px"
-            document.getElementById("score").style.color = "red";
+            document.body.style["background-image"] = "url(\"2019.gif\")"
+            document.body.style["background-size"] = "25%"
+            document.getElementById("score").style.color = "gold";
             document.getElementById("skelly-container").style.display = "none";
           }
   
@@ -218,9 +219,9 @@
         }
   
         function setupDOM() {
-          document.getElementById("button-1").addEventListener("click", () => spin(1));
-          document.getElementById("button-5").addEventListener("click", () => spin(5));
-          document.getElementById("button-10").addEventListener("click", () => spin(10));
+          document.getElementById("button-1").addEventListener("click", () => spin(20));
+          document.getElementById("button-5").addEventListener("click", () => spin(19));
+          // document.getElementById("button-10").addEventListener("click", () => spin(10));
           document.getElementById("autospin-button").addEventListener("click", toggleAuto);
         }
   
