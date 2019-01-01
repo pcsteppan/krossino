@@ -155,7 +155,7 @@
             changeScore(-bet);
             reelData.forEach((reel) => {
               reel.previous = reel.new;
-              reel.new = Math.floor(Math.random() * reel_ids.length);
+              reel.new = Math.random() > 0.7 ? 24 : Math.floor(Math.random() * reel_ids.length);
               reel.p = 0;
             })
           }
