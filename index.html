@@ -19,7 +19,7 @@
       }
       #button-shelf > button {
         /* background-color: rgb(240, 20, 49); */
-        background-color: black;
+        background-color: rgba(0,0,0,0.9);
         color: rgb(240, 225, 20);
         text-align: center;
         font-family: cursive;
@@ -33,7 +33,7 @@
         text-align: center;
         width: 100%;
         color: gold;
-        background-color: black;
+        background-color: rgba(0,0,0,0.7);
         font-size: 2rem;
         font-family: cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       }
@@ -155,7 +155,7 @@
             changeScore(-bet);
             reelData.forEach((reel) => {
               reel.previous = reel.new;
-              reel.new = Math.random() > 0.7 ? 24 : Math.floor(Math.random() * reel_ids.length);
+              reel.new = Math.random() > 0.95 ? 24 : Math.floor(Math.random() * reel_ids.length);
               reel.p = 0;
             })
           }
